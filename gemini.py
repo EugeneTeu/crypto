@@ -9,8 +9,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 # BASE_URL = "https://api.sandbox.gemini.com/v1"
-# API_KEY = os.environ["API_KEY_3"]
-# API_SECRET = os.environ["API_SECRET_3"].encode()
+# API_KEY = os.environ["API_KEY_TEST"]
+# API_SECRET = os.environ["API_SECRET_TEST"].encode()
 
 BASE_URL = "https://api.gemini.com/v1"
 API_KEY = os.environ["REAL_API_KEY"]
@@ -41,7 +41,7 @@ def encodePayloadAndPost(payload, url):
 
 
 def getAllSymbols():
-    response = requests.get(base_url + "/symbols")
+    response = requests.get(BASE_URL + "/symbols")
     symbols = response.json()
     print(symbols)
 
@@ -82,5 +82,12 @@ def placeBuyOrder(symbol, amount, price):
     print(res)
 
 
-placeBuyOrder("ethsgd", "0.01", "400")
-getActiveOrders()
+def main():
+    getAllSymbols()
+    # example:
+    # placeBuyOrder("ethsgd", "0.05", "5255")
+    # placeBuyOrder("crvusd", "100", "3.288")
+    # getActiveOrders()
+
+
+main()
