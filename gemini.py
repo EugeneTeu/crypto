@@ -6,15 +6,23 @@ import hashlib
 import datetime
 import time
 import os
+import ssl
+import websocket
+
 from dotenv import load_dotenv
 load_dotenv()
-# BASE_URL = "https://api.sandbox.gemini.com/v1"
-# API_KEY = os.environ["API_KEY_TEST"]
-# API_SECRET = os.environ["API_SECRET_TEST"].encode()
+BASE_URL = "https://api.sandbox.gemini.com/v1"
+API_KEY = os.environ["API_KEY_TEST"]
+API_SECRET = os.environ["API_SECRET_TEST"].encode()
+WEB_SOCKET_URL = "wss://api.sandbox.gemini.com/v1"
 
-BASE_URL = "https://api.gemini.com/v1"
-API_KEY = os.environ["REAL_API_KEY"]
-API_SECRET = os.environ["REAL_API_SECRET"].encode()
+# BASE_URL = "https://api.gemini.com/v1"
+# API_KEY = os.environ["REAL_API_KEY"]
+# API_SECRET = os.environ["REAL_API_SECRET"].encode()
+
+# ------------------------------------------------------------------------------
+# Util
+# ------------------------------------------------------------------------------
 
 
 def createNonce():
@@ -65,6 +73,29 @@ def getActiveOrders():
     print(res)
 
 
+def getMarketData(symbol):
+    # {"type": "update", "eventId": 1320430971, "timestamp": 1639622222, "timestampms": 1639622222393, "socket_sequence": 2, "events": [
+    #     {"type": "change", "side": "bid", "price": "49039.93", "remaining": "0", "delta": "-0.04078309", "reason": "cancel"}]}
+    currPrice = -1
+
+    def on_message(ws, msg):
+        # To keep an up-to-date order book, just watch for any events with {"type": "change"},
+        # and update the price level at price with the amount at remaining. The initial response message will contain all the change events necessary to populate your order book from scratch.
+        events = eval(msg).get("events")
+        for event in events:
+            if event.get("type") == "change":
+                currPrice = event.get("price")
+                print(symbol + " " + currPrice)
+
+    url = WEB_SOCKET_URL + "/marketdata/" + symbol
+    ws = websocket.WebSocketApp(url, on_message=on_message)
+    ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+
+# ------------------------------------------------------------------------------
+#  Buy and sell market orders
+# ------------------------------------------------------------------------------
+
+
 def placeBuyOrder(symbol, amount, price):
     url = BASE_URL + "/order/new"
     payload_nonce = createNonce()
@@ -82,12 +113,30 @@ def placeBuyOrder(symbol, amount, price):
     print(res)
 
 
+def placeSellOrder(symbol, amount, price):
+    url = BASE_URL + "/order/new"
+    payload_nonce = createNonce()
+    payload = {
+        "nonce": payload_nonce,
+        "request": "/v1/order/new",
+        "symbol": symbol,
+        "amount": amount,
+        "price": price,
+        "side": "sell",
+        "type": "exchange limit",
+        "options": ["maker-or-cancel"]
+    }
+    res = encodePayloadAndPost(payload, url)
+    print(res)
+
+
 def main():
-    getAllSymbols()
+    # getAllSymbols()
     # example:
     # placeBuyOrder("ethsgd", "0.05", "5255")
     # placeBuyOrder("crvusd", "100", "3.288")
     # getActiveOrders()
+    getMarketData("ETHUSD")
 
 
 main()
