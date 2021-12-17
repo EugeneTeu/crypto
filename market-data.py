@@ -2,9 +2,7 @@ import util.gemini as u
 
 
 def main():
-    u.getAllSymbols()
-    u.getActiveOrders()
-    # u.placeBuyOrder("yfiusd", "0.008", "27300.88")
+    u.getMarketData("yfiusd")
     # example:
     # placeBuyOrder("ethsgd", "0.05", "5255")
     # placeBuyOrder("crvusd", "100", "3.288")
