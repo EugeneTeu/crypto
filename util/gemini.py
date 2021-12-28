@@ -8,6 +8,7 @@ import time
 import os
 import ssl
 import websocket
+import _thread as thread
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -79,6 +80,7 @@ def getMarketData(symbol):
     #     {"type": "change", "side": "bid", "price": "49039.93", "remaining": "0", "delta": "-0.04078309", "reason": "cancel"}]}
     currPrice = -1
     currAmt = -1
+    currSide = ""
 
     def on_message(ws, msg):
         # To keep an up-to-date order book, just watch for any events with {"type": "change"},
@@ -89,10 +91,38 @@ def getMarketData(symbol):
             if event.get("type") == "change":
                 currPrice = event.get("price")
                 currAmt = event.get("remaining")
-                print(symbol + " price:$" + currPrice + " amt:" + currAmt)
+                currSide = event.get("side")
+                print(symbol + " price:$" + currPrice +
+                      " amt:" + currAmt + " side: " + currSide)
 
-    url = WEB_SOCKET_URL + "/marketdata/" + symbol
+    url = WEB_SOCKET_URL + "/marketdata/" + symbol + "?top_of_book=true"
     ws = websocket.WebSocketApp(url, on_message=on_message)
+    ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
+
+
+def getLevelTwoMarketData():
+    def on_message(ws, message):
+        print(message)
+
+    def on_error(ws, error):
+        print(error)
+
+    def on_close(ws):
+        print("### closed ###")
+
+    def on_open(ws):
+        def run(*args):
+            ws.send(logon_msg)
+        thread.start_new_thread(run, ())
+
+    logon_msg = '{"type": "subscribe","subscriptions":[{"name":"candles_1m","symbols":["BTCUSD","ETHUSD"]}]}'
+    websocket.enableTrace(True)
+    ws = websocket.WebSocketApp("wss://api.gemini.com/v2/marketdata",
+                                on_message=on_message,
+                                on_error=on_error,
+                                on_close=on_close,
+                                on_open=on_open)
+    ws.on_open = on_open
     ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
 
     # ------------------------------------------------------------------------------
