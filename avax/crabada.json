@@ -1,0 +1,32 @@
+[
+  {
+    "constant": true,
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "teamId",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [],
+    "name": "startGame",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "gameId",
+        "type": "uint256"
+      }
+    ],
+    "outputs": [],
+    "name": "closeGame",
+    "type": "function"
+  }
+]
