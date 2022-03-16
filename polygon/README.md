@@ -33,3 +33,9 @@ tested with `python3.9.0`
 `python3 -m raider.getGrimweedRewards.py`
 
 `python3 -m raider.getNewtRewards.py`
+
+### Start Quest 
+
+`python3 -m raider.startGrimweedQuest`
+
+`python3 -m raider.startNewtQuest`
