@@ -9,8 +9,8 @@ from src.clients import newtClient
 
 for id in RAIDER_IDS:
     raiderId = int(id)
-    status = newtClient.getRaiderStatus(raiderId)
-    if status == 1:
+    status1 = newtClient.getRaiderStatus(raiderId)
+    if status1 == 1:
         txHash = newtClient.endQuest(raiderId)
         txLogger.info(txHash)
         txReceipt = newtClient.getTransactionReceipt(txHash)

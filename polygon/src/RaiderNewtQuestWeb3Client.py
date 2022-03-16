@@ -23,7 +23,6 @@ class RaiderNewtQuestWeb3Client(PolygonWeb3Client):
     def getRewards(self, raiderId) -> int:
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.getRewards(raiderId))
-        print(tx)
         return self.signAndSendTransaction(tx)
 
     def endQuest(self, raiderId) -> int:
@@ -33,6 +32,24 @@ class RaiderNewtQuestWeb3Client(PolygonWeb3Client):
 
     def calcReturnTime(self, raiderId) -> int:
         time = self.contract.functions.calcReturnTime(raiderId).call()
+        return time
+
+    def calcRaiderRewardTime(self, raiderId) -> int:
+        time = self.contract.functions.calcRaiderRewardTime(raiderId).call()
+        return time
+
+    def raiderStartQuest(self, raiderId) -> int:
+        tx: TxParams = self.buildContractTransaction(
+            self.contract.functions.endQuest(raiderId))
+        return self.signAndSendTransaction(tx)
+
+    def raiderEndQuest(self, raiderId) -> int:
+        tx: TxParams = self.buildContractTransaction(
+            self.contract.functions.endQuest(raiderId))
+        return self.signAndSendTransaction(tx)
+
+    def timeTillHome(self, raiderId) -> int:
+        time = self.contract.functions.timeTillHome(raiderId).call()
         return time
 
     def getRaiderStatus(self, raiderId) -> int:
