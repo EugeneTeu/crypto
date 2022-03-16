@@ -35,6 +35,10 @@ class RaiderGrimweedQuestWeb3Client(PolygonWeb3Client):
         time = self.contract.functions.calcReturnTime(raiderId).call()
         return time
 
+    def calcRaiderRewardTime(self, raiderId) -> int:
+        time = self.contract.functions.calcRaiderRewardTime(raiderId).call()
+        return time
+
     def getRaiderStatus(self, raiderId) -> int:
         '''
             returns an int for each raider

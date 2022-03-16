@@ -11,5 +11,5 @@ for id in RAIDER_IDS:
     raiderId = int(id)
     status = grimweedClient.getRaiderStatus(raiderId)
     if status == 2:
-        time = grimweedClient.calcReturnTime(raiderId)
+        time = grimweedClient.calcRaiderRewardTime(raiderId)
         print(time)

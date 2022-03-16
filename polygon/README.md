@@ -22,10 +22,14 @@ tested with `python3.9.0`
 ## Usage Raiders
 
 ### End quest 
+
 `python3 -m raider.endNewtQuest.py`
+
 `python3 -m raider.endGrimweedQuest.py`
 
 
 ### Get Reward and return home
-`python3 -m raider.getGrimweedRewards.py
-`python3 -m raider.getNewtRewards.py
+
+`python3 -m raider.getGrimweedRewards.py`
+
+`python3 -m raider.getNewtRewards.py`
