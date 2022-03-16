@@ -6,6 +6,9 @@ import logging
 import logging.handlers
 import os
 
+import dotenv
+
+dotenv.load_dotenv()
 
 # Create a custom logger
 logger = logging.getLogger(__name__)
