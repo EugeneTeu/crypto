@@ -10,8 +10,8 @@ class PolygonWeb3Client(Web3Client):
     """
 
     chainId: int = 137
-    gasLimit: int = 100000  # sensible value for polygon
-    maxPriorityFeePerGasInGwei: int = 2
+    gasLimit: int = 400000  # sensible value for polygon
+    maxPriorityFeePerGasInGwei: int = 40
 
     def setNodeUri(self, nodeUri: str = None) -> PolygonWeb3Client:
         """

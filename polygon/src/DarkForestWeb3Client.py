@@ -12,11 +12,11 @@ from src.constants import DARK_FOREST_CONTRACT
 from src.Web3Client import Web3Client
 
 
-class UnicornWeb3Client(PolygonWeb3Client):
+class DarkForestWeb3Client(PolygonWeb3Client):
 
     contractAddress = cast(
         Address, DARK_FOREST_CONTRACT)
-    abiDir = os.path.dirname(os.path.realpath(__file__)) + "/abi"
+    abiDir = os.path.dirname(os.path.realpath(__file__)) + "/unicorn_abi"
     abi = Web3Client.getContractAbiFromFile(abiDir + "/dark_forest_abi.json")
 
     def getNumberOfUnicornStaked(self) -> int:
@@ -40,8 +40,17 @@ class UnicornWeb3Client(PolygonWeb3Client):
             tokenId = self.getTokenOfStakerByIndex(i)
             canUnstake = self.canUnstake(tokenId)
             result.append({
-                "unicorn": tokenId,
+                "tokenId": tokenId,
                 "canUnstake": canUnstake
             })
         return result
-    
+
+    def unStakeUnicorns(self, tokenId) -> int:
+        tx: TxParams = self.buildContractTransaction(
+            self.contract.functions.exitForest(tokenId))
+        return self.signAndSendTransaction(tx)
+
+    def stakeUnicorns(self, tokenId) -> int:
+        tx: TxParams = self.buildContractTransaction(
+            self.contract.functions.exitForest(tokenId))
+        return self.signAndSendTransaction(tx)
