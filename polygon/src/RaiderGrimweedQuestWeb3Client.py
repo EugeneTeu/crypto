@@ -23,7 +23,6 @@ class RaiderGrimweedQuestWeb3Client(PolygonWeb3Client):
     def getRewards(self, raiderId) -> int:
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.getRewards(raiderId))
-        print(tx)
         return self.signAndSendTransaction(tx)
 
     def endQuest(self, raiderId) -> int:
@@ -37,6 +36,15 @@ class RaiderGrimweedQuestWeb3Client(PolygonWeb3Client):
 
     def calcRaiderRewardTime(self, raiderId) -> int:
         time = self.contract.functions.calcRaiderRewardTime(raiderId).call()
+        return time
+
+    def raiderEndQuest(self, raiderId) -> int:
+        tx: TxParams = self.buildContractTransaction(
+            self.contract.functions.endQuest(raiderId))
+        return self.signAndSendTransaction(tx)
+
+    def timeTillHome(self, raiderId) -> int:
+        time = self.contract.functions.timeTillHome(raiderId).call()
         return time
 
     def getRaiderStatus(self, raiderId) -> int:
