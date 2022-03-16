@@ -6,11 +6,11 @@ from datetime import datetime
 
 BTC_SYMBOL = "BTCUSD"
 ETH_SYMBOL = "ETHUSD"
-CRV_SYMBOL = "CRVUSD"
-ANKR_SYMBOL = "ANKRUSD"
-YFI_SYMBOL = "YFIUSD"
+# CRV_SYMBOL = "CRVUSD"
+# ANKR_SYMBOL = "ANKRUSD"
+# YFI_SYMBOL = "YFIUSD"
 
-symbols = [BTC_SYMBOL, ETH_SYMBOL, CRV_SYMBOL]
+symbols = [BTC_SYMBOL, ETH_SYMBOL]
 
 
 def process(orderBooks, lock):

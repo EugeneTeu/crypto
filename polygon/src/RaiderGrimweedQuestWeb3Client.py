@@ -30,3 +30,23 @@ class RaiderGrimweedQuestWeb3Client(PolygonWeb3Client):
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.endQuest(raiderId))
         return self.signAndSendTransaction(tx)
+
+    def calcReturnTime(self, raiderId) -> int:
+        time = self.contract.functions.calcReturnTime(raiderId).call()
+        return time
+
+    def getRaiderStatus(self, raiderId) -> int:
+        '''
+            returns an int for each raider
+            0 -> not on this quest
+            1 -> on quest
+            2 -> quest ended waiting for cooldown
+
+            enum Status {
+                None,
+                Questing,
+                Returning
+            } 
+        '''
+        status = self.contract.functions.raiderStatus(raiderId).call()
+        return status

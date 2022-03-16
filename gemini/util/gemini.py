@@ -72,7 +72,13 @@ def getActiveOrders():
         "request": "/v1/orders"
     }
     res = encodePayloadAndPost(payload, url)
-    print(res)
+
+    prettyPrint(res)
+
+
+def prettyPrint(res):
+    for value in res:
+        print(json.dumps(value, indent=4))
 
 
 def getMarketData(symbol):

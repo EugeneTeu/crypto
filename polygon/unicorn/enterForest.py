@@ -5,6 +5,7 @@ usage: python3 -m unicorn.enterForest
 
 from web3 import Web3
 from src.DarkForestWeb3Client import DarkForestWeb3Client
+
 from src.clients import unicornNFTClient
 from src.logger.txLogger import txLogger, logTx
 

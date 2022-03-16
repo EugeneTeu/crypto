@@ -1,0 +1,4 @@
+eth_account==0.5.6
+eth_typing==2.2.2
+python-dotenv==0.19.2
+web3==5.25.0
