@@ -49,8 +49,11 @@ class RaiderNewtQuestWeb3Client(PolygonWeb3Client):
         return self.signAndSendTransaction(tx)
 
     def timeTillHome(self, raiderId) -> int:
-        time = self.contract.functions.timeTillHome(raiderId).call()
-        return time
+        try:
+            time = self.contract.functions.timeTillHome(raiderId).call()
+            return time
+        except:
+            return 0
 
     def getRaiderStatus(self, raiderId) -> int:
         '''
