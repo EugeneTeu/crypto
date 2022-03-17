@@ -40,7 +40,7 @@ class RaiderNewtQuestWeb3Client(PolygonWeb3Client):
 
     def raiderStartQuest(self, raiderId) -> int:
         tx: TxParams = self.buildContractTransaction(
-            self.contract.functions.endQuest(raiderId))
+            self.contract.functions.startQuest(raiderId))
         return self.signAndSendTransaction(tx)
 
     def raiderEndQuest(self, raiderId) -> int:
