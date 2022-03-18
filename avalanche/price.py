@@ -1,6 +1,5 @@
+from src.price import getPrice, getUSDCPrice
+from src.clients import TusWavaxLpCLient
 
-from src.clients import UsdcClient
-
-
-val = UsdcClient.test()
-print(val)
+tusPrice = getPrice(TusWavaxLpCLient)
+print(getUSDCPrice(tusPrice))

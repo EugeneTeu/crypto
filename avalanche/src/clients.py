@@ -5,9 +5,10 @@ import os
 from typing import cast
 
 import dotenv
-from src.constants import USDC_CONTRACT
+from src.constants import TUS_LP_CONTRACT, USDC_LP_CONTRACT
 
 from src.traderJoeClient.JoeLcWebc3Client import JoeLcWeb3Client
+from src.token.TokenWeb3Client import TokenWeb3Client
 
 
 if not os.path.isfile(".env"):
@@ -19,5 +20,16 @@ nodeUri = getenv("WEB3_NODE_URI")
 key = getenv("PRIVATE_KEY")
 
 
-UsdcClient = cast(JoeLcWeb3Client, JoeLcWeb3Client(
-    USDC_CONTRACT, "/abi/joepool_abi.json").setNodeUri(nodeUri))
+# ==============================================================================
+# Init client
+# ==============================================================================
+
+UsdcWavaxLpClient = cast(JoeLcWeb3Client, JoeLcWeb3Client(
+    USDC_LP_CONTRACT).setNodeUri(nodeUri))
+
+TusWavaxLpCLient = cast(JoeLcWeb3Client, JoeLcWeb3Client(
+    TUS_LP_CONTRACT).setNodeUri(nodeUri))
+
+
+def getTokenClient(contractAddress):
+    return cast(TokenWeb3Client, TokenWeb3Client(contractAddress).setNodeUri(nodeUri))

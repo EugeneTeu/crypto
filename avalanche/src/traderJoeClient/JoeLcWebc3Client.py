@@ -12,11 +12,17 @@ from src.Web3Client import Web3Client
 
 class JoeLcWeb3Client(AvalancheCWeb3Client):
 
-    def __init__(self, liquidityContractAddr, abiFilePath):
-        self.contractAddress = cast(Address, liquidityContractAddr)
-        self.abi = Web3Client.getContractAbiFromFile(
-            os.path.dirname(os.path.realpath(__file__)) + abiFilePath)
+    abiDir = os.path.dirname(os.path.realpath(__file__)) + "/abi"
+    abi = Web3Client.getContractAbiFromFile(abiDir + "/joepool_abi.json")
 
-    def test(self):
-        val = self.contract.functions.getReserves().call()
-        return val
+    def __init__(self, liquidityContractAddr):
+        self.contractAddress = cast(Address, liquidityContractAddr)
+
+    def getReserves(self):
+        return self.contract.functions.getReserves().call()
+
+    def getToken0(self):
+        return self.contract.functions.token0().call()
+
+    def getToken1(self):
+        return self.contract.functions.token1().call()
