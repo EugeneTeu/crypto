@@ -1,4 +1,4 @@
-# Gamefi scripts
+# Polygon scripts
 
 
 ## Quickstart
