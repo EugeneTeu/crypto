@@ -5,7 +5,7 @@ from web3.middleware import geth_poa_middleware
 
 class PolygonWeb3Client(Web3Client):
     """
-    Client to interact with the Avalanche blockchain and
+    Client to interact with the Polygon blockchain and
     its smart contracts.
     """
 
