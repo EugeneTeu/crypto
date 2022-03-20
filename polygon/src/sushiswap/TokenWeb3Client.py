@@ -14,7 +14,7 @@ class TokenWeb3Client(PolygonWeb3Client):
     abiDir = os.path.dirname(os.path.realpath(__file__)) + "/abi"
     abi = Web3Client.getContractAbiFromFile(abiDir + "/erc20_abi.json")
 
-    def __init__(self, tokenAddress):
+    def __init__(self, tokenAddress: str):
         self.contractAddress = cast(Address, tokenAddress)
 
     def getTokenInfo(self) -> dict[str, str]:

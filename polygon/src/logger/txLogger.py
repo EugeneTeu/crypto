@@ -37,6 +37,9 @@ def logTx(txReceipt: TxReceipt) -> None:
     """Given a tx receipt, print to screen the transaction details
     and its cost"""
     txLogger.debug(txReceipt)
+    status = txReceipt["status"]
+    if status != 1:
+        txLogger.error("Transaction failed!")
     ethSpent = Web3.fromWei(
         txReceipt["effectiveGasPrice"] * txReceipt["gasUsed"], "ether"
     )

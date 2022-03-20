@@ -1,5 +1,5 @@
 import time
-from typing import cast
+from typing import Dict, cast
 import json
 from eth_typing import Address
 from web3 import Web3
@@ -24,17 +24,17 @@ class UnicornNFTWeb3Client(PolygonWeb3Client):
         num = self.contract.functions.balanceOf(self.userAddress).call()
         return num
 
-    def getTokenOfOwnerByIndex(self, i) -> int:
+    def getTokenOfOwnerByIndex(self, i: int) -> int:
         tokenId = self.contract.functions.tokenOfOwnerByIndex(
             self.userAddress, i).call()
         return tokenId
 
-    def canUnstake(self, tokenId) -> bool:
+    def canUnstake(self, tokenId: int) -> bool:
         unstakedAt = self.contract.functions.unstakesAt(tokenId).call()
         currentTime = time.time()
         return currentTime > unstakedAt
 
-    def getUnicornStatus(self) -> list:
+    def getUnicornStatus(self) -> list[Dict[str, int]]:
         result = []
         numStaked = self.getNumberOfUnicorn()
         for i in range(numStaked):
@@ -44,7 +44,7 @@ class UnicornNFTWeb3Client(PolygonWeb3Client):
             })
         return result
 
-    def stakeUnicorns(self, darkForestAddress, tokenId) -> int:
+    def stakeUnicorns(self, darkForestAddress: str, tokenId: int) -> int:
         assert str(darkForestAddress) == Web3.toChecksumAddress(
             DARK_FOREST_CONTRACT)
 

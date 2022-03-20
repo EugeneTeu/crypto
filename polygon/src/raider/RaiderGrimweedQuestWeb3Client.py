@@ -20,42 +20,42 @@ class RaiderGrimweedQuestWeb3Client(PolygonWeb3Client):
     abi = Web3Client.getContractAbiFromFile(
         abiDir + "/grimweed_quest_abi.json")
 
-    def getRewards(self, raiderId) -> int:
+    def getRewards(self, raiderId: int) -> int:
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.getRewards(raiderId))
         return self.signAndSendTransaction(tx)
 
-    def endQuest(self, raiderId) -> int:
+    def endQuest(self, raiderId: int) -> int:
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.endQuest(raiderId))
         return self.signAndSendTransaction(tx)
 
-    def calcReturnTime(self, raiderId) -> int:
+    def calcReturnTime(self, raiderId: int) -> int:
         time = self.contract.functions.calcReturnTime(raiderId).call()
         return time
 
-    def calcRaiderRewardTime(self, raiderId) -> int:
+    def calcRaiderRewardTime(self, raiderId: int) -> int:
         time = self.contract.functions.calcRaiderRewardTime(raiderId).call()
         return time
 
-    def raiderStartQuest(self, raiderId) -> int:
+    def raiderStartQuest(self, raiderId: int) -> int:
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.startQuest(raiderId))
         return self.signAndSendTransaction(tx)
 
-    def raiderEndQuest(self, raiderId) -> int:
+    def raiderEndQuest(self, raiderId: int) -> int:
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.endQuest(raiderId))
         return self.signAndSendTransaction(tx)
 
-    def timeTillHome(self, raiderId) -> int:
+    def timeTillHome(self, raiderId: int) -> int:
         try:
             time = self.contract.functions.timeTillHome(raiderId).call()
             return time
         except:
             return 0
 
-    def getRaiderStatus(self, raiderId) -> int:
+    def getRaiderStatus(self, raiderId: int) -> int:
         '''
             returns an int for each raider
             0 -> not on this quest

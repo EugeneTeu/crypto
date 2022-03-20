@@ -12,6 +12,8 @@ from src.unicorn.DarkForestWeb3Client import DarkForestWeb3Client
 from src.raider.RaiderNewtQuestWeb3Client import RaiderNewtQuestWeb3Client
 from src.raider.RaiderGrimweedQuestWeb3Client import RaiderGrimweedQuestWeb3Client
 
+from src.sushiswap.SushiSwapRouterWeb3Client import SushiSwapRouterWeb3Client
+
 if not os.path.isfile(".env"):
     raise Exception(".env file not found")
 dotenv.load_dotenv()
@@ -40,4 +42,11 @@ darkForestClient = cast(DarkForestWeb3Client, DarkForestWeb3Client(
 ).setNodeUri(nodeUri).setCredentials(key))
 
 unicornNFTClient = cast(UnicornNFTWeb3Client, UnicornNFTWeb3Client(
+).setNodeUri(nodeUri).setCredentials(key))
+
+# ==============================================================================
+# Sushiswap client
+# ==============================================================================
+
+sushiswapRouterClient = cast(SushiSwapRouterWeb3Client, SushiSwapRouterWeb3Client(
 ).setNodeUri(nodeUri).setCredentials(key))

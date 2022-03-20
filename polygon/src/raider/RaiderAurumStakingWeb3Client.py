@@ -24,9 +24,9 @@ class RaiderAurumStakingWeb3Client(PolygonWeb3Client):
         abiDir + "/aurum_staking_abi.json")
 
     def _getUserPendingRewards(self) -> Raider:
-        return convertReadable(self.contract.functions.userPendingRewards(self.userAddress).call(), Raider)
+        return convertReadable(self.contract.functions.userPendingRewards(self.userAddress).call())
 
-    def getUserRewards(self):
+    def getUserRewards(self) -> HexStr:
         currentRewards = self._getUserPendingRewards()
         txLogger.info("current Aurum-USDC Rewards: %f RAIDERS", currentRewards)
         if currentRewards > 3.0:
@@ -36,4 +36,4 @@ class RaiderAurumStakingWeb3Client(PolygonWeb3Client):
             return self.signAndSendTransaction(tx)
         else:
             txLogger.error("Raider rewards is currently below claim threshold")
-            return
+            exit(1)

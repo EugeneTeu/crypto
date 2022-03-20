@@ -1,5 +1,5 @@
 import time
-from typing import cast
+from typing import Dict, List, cast
 import json
 from eth_typing import Address
 from web3.types import TxParams
@@ -23,17 +23,17 @@ class DarkForestWeb3Client(PolygonWeb3Client):
         numStaked = self.contract.functions.numStaked(self.userAddress).call()
         return numStaked
 
-    def getTokenOfStakerByIndex(self, i) -> int:
+    def getTokenOfStakerByIndex(self, i: int) -> int:
         tokenId = self.contract.functions.tokenOfStakerByIndex(
             self.userAddress, i).call()
         return tokenId
 
-    def canUnstake(self, tokenId) -> bool:
+    def canUnstake(self, tokenId: int) -> bool:
         unstakedAt = self.contract.functions.unstakesAt(tokenId).call()
         currentTime = time.time()
         return currentTime > unstakedAt
 
-    def getUnicornStatus(self) -> list:
+    def getUnicornStatus(self) -> List[Dict[str, int]]:
         result = []
         numStaked = self.getNumberOfUnicornStaked()
         for i in range(numStaked):
@@ -45,12 +45,12 @@ class DarkForestWeb3Client(PolygonWeb3Client):
             })
         return result
 
-    def unStakeUnicorns(self, tokenId) -> int:
+    def unStakeUnicorns(self, tokenId: int) -> int:
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.exitForest(tokenId))
         return self.signAndSendTransaction(tx)
 
-    def stakeUnicorns(self, tokenId) -> int:
+    def stakeUnicorns(self, tokenId: int) -> int:
         tx: TxParams = self.buildContractTransaction(
             self.contract.functions.exitForest(tokenId))
         return self.signAndSendTransaction(tx)
