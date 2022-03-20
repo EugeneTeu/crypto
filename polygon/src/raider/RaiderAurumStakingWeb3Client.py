@@ -10,9 +10,9 @@ from src.logger.txLogger import logTx
 from src.helper.format import convertReadable
 from src.helper.types import Raider
 
-from src.constants import AURUM_STAKING_CONTRACT
-from src.PolygonWeb3Client import PolygonWeb3Client
-from src.Web3Client import Web3Client
+from src.constants.constants import AURUM_STAKING_CONTRACT
+from src.base.PolygonWeb3Client import PolygonWeb3Client
+from src.base.Web3Client import Web3Client
 from src.logger.txLogger import txLogger
 
 

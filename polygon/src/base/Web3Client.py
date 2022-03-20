@@ -8,7 +8,7 @@ from eth_account.datastructures import SignedTransaction
 from web3.contract import Contract, ContractFunction
 from web3.types import BlockData, Nonce, TxParams, TxReceipt, TxData
 from eth_typing.encoding import HexStr
-from src.exceptions import MissingParameter
+from src.base.exceptions import MissingParameter
 
 
 class Web3Client:

@@ -8,9 +8,9 @@ from web3.types import TxParams
 from eth_typing.encoding import HexStr
 import os
 
-from src.PolygonWeb3Client import PolygonWeb3Client
-from src.constants import UNICORN_NFT_CONTRACT, DARK_FOREST_CONTRACT
-from src.Web3Client import Web3Client
+from src.base.PolygonWeb3Client import PolygonWeb3Client
+from src.constants.constants import UNICORN_NFT_CONTRACT, DARK_FOREST_CONTRACT
+from src.base.Web3Client import Web3Client
 
 
 class UnicornNFTWeb3Client(PolygonWeb3Client):

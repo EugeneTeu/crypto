@@ -1,5 +1,5 @@
 from __future__ import annotations
-from src.Web3Client import Web3Client
+from src.base.Web3Client import Web3Client
 from web3.middleware import geth_poa_middleware
 
 

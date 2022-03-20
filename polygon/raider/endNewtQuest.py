@@ -1,9 +1,9 @@
 '''
-usage: python3 -m raider.endGrimweedQuest
+usage: python3 -m raider.endNewtQuest
 
 '''
 from src.logger.txLogger import logTx
-from src.constants import RAIDER_IDS
+from src.constants.constants import RAIDER_IDS
 from src.logger.txLogger import txLogger
 from src.clients import newtClient
 
