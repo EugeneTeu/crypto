@@ -17,7 +17,8 @@ def createPath(addresses: list[str]) -> list[ChecksumAddress]:
 
 
 def swapTxn(amtIn: float, path: list[str]) -> None:
-    # want to swap 3.6 raider to aurum
+    # convert from readable to non readable
+    # assume all amt in is 18 decimals
     amtIn = convertToWei(amtIn)
     # simulate swap amount
     val1 = sushiswapRouterClient.getAmountsOut(amtIn, path)
@@ -35,4 +36,4 @@ def swapTxn(amtIn: float, path: list[str]) -> None:
 raiderWmaticAurumPath = [RAIDER_TOKEN_CONTRACT,
                          WMATIC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT]
 
-swapTxn(0.5, raiderWmaticAurumPath)
+# swapTxn(0.5, raiderWmaticAurumPath)

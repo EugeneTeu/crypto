@@ -39,3 +39,7 @@ tested with `python3.9.0`
 `python3 -m raider.startGrimweedQuest`
 
 `python3 -m raider.startNewtQuest`
+
+### Usage Sushiswap [WIP]
+
+`python3 -m sushiswap.swapToken`
