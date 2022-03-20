@@ -4,7 +4,7 @@ from web3 import Web3
 from web3.types import Wei
 
 
-def convertReadable(amount, type):
+def convertReadable(amount, type) -> type:
     '''
       convert amount to type assuming 10^18 decimals
     '''
