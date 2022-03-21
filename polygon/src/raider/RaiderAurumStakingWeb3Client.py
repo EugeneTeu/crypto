@@ -6,7 +6,8 @@ from web3.types import TxParams
 
 from eth_typing.encoding import HexStr
 import os
-from src.logger import logTx, txLogger, logger
+from src.logger.txLogger import logTx
+from src.logger import txLogger, logger
 from src.helper.format import convertReadable
 from src.helper.types import Raider
 

@@ -2,7 +2,8 @@
 usage: python3 -m raider.endGrimweedQuest
 
 '''
-from src.logger import logTx, txLogger, logger
+from src.logger import txLogger, logger
+from src.logger.txLogger import logTx
 from src.constants.constants import RAIDER_IDS
 from src.clients import grimweedClient, newtClient
 
