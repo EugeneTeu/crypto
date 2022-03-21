@@ -6,14 +6,13 @@ from web3.types import TxParams
 
 from eth_typing.encoding import HexStr
 import os
-from src.logger.txLogger import logTx
+from src.logger import logTx, txLogger, logger
 from src.helper.format import convertReadable
 from src.helper.types import Raider
 
 from src.constants.constants import AURUM_STAKING_CONTRACT
 from src.base.PolygonWeb3Client import PolygonWeb3Client
 from src.base.Web3Client import Web3Client
-from src.logger.txLogger import txLogger
 
 
 class RaiderAurumStakingWeb3Client(PolygonWeb3Client):

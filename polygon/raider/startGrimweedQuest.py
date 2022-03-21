@@ -3,9 +3,8 @@ usage: python3 -m raider.startGrimweedQuest
 
 '''
 
-from src.logger.txLogger import logTx
+from src.logger import logTx, txLogger, logger
 from src.constants.constants import RAIDER_IDS
-from src.logger.txLogger import txLogger
 from src.clients import grimweedClient, newtClient
 
 for id in RAIDER_IDS:

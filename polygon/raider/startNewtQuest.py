@@ -3,9 +3,8 @@ usage: python3 -m raider.startNewtQuest
 
 '''
 
-from src.logger.txLogger import logTx
+from src.logger import logTx, txLogger, logger
 from src.constants.constants import RAIDER_IDS
-from src.logger.txLogger import txLogger
 from src.clients import newtClient, grimweedClient
 
 for id in RAIDER_IDS:

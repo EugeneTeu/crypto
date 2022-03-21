@@ -3,9 +3,8 @@ usage: python3 -m raider.getGrimweedRewards
 
 '''
 
-from src.logger.txLogger import logTx
+from src.logger import logTx, txLogger, logger
 from src.constants.constants import RAIDER_IDS
-from src.logger.txLogger import txLogger
 from src.clients import newtClient
 for id in RAIDER_IDS:
     raiderId = int(id)
@@ -17,6 +16,8 @@ for id in RAIDER_IDS:
             txLogger.info(txHash)
             txReceipt = newtClient.getTransactionReceipt(txHash)
             logTx(txReceipt)
+            if txReceipt["status"] != 1:
+                logger.error(f"Error getting grimweed rewards for {raiderId}")
         else:
             txLogger.info("%s still need %ss to get home!",
                           str(raiderId), str(timeTillHome))
