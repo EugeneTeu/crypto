@@ -36,4 +36,9 @@ def swapTxn(amtIn: float, path: list[str]) -> None:
 raiderWmaticAurumPath = [RAIDER_TOKEN_CONTRACT,
                          WMATIC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT]
 
-# swapTxn(0.5, raiderWmaticAurumPath)
+
+# def autoCompoundLPRewards() -> None:
+#     # TODO
+#     print("")
+
+# swapTxn(3.24393, raiderWmaticAurumPath)

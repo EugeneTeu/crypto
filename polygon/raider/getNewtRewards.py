@@ -3,8 +3,8 @@ usage: python3 -m raider.getGrimweedRewards
 
 '''
 
-from src.logger import txLogger, logger
-from src.logger.txLogger import logTx
+from src.logger.logger import logger
+from src.logger.txLogger import logTx, txLogger
 from src.constants.constants import RAIDER_IDS
 from src.clients import newtClient
 for id in RAIDER_IDS:
