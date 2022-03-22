@@ -1,5 +1,6 @@
 
-from typing import Any, Type, cast, NewType
+from decimal import Decimal
+from typing import Any, Type, Union, cast, NewType
 from web3 import Web3
 import web3
 from web3.types import Wei
@@ -14,3 +15,11 @@ def convertReadable(amount: int) -> float:
 
 def convertToWei(amount: float) -> Wei:
     return Web3.toWei(amount, 'ether')
+
+
+def convertToWeiUSDC(amount: float) -> Wei:
+    return Web3.toWei(amount, "micro")
+
+
+def convertFromWeiUSDC(amount: int) -> float:
+    return amount / pow(10, 6)

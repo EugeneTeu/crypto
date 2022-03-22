@@ -5,8 +5,8 @@ import json
 from eth_typing import Address
 from web3.types import TxParams
 
-from src.PolygonWeb3Client import PolygonWeb3Client
-from src.Web3Client import Web3Client
+from src.base.PolygonWeb3Client import PolygonWeb3Client
+from src.base.Web3Client import Web3Client
 
 
 class TokenWeb3Client(PolygonWeb3Client):
@@ -21,3 +21,6 @@ class TokenWeb3Client(PolygonWeb3Client):
         symbol = self.contract.functions.symbol().call()
         decimals = self.contract.functions.decimals().call()
         return {"symbol": symbol, "decimals": decimals}
+
+    def getBalance(self) -> int:
+        return self.contract.functions.balanceOf(self.userAddress).call()

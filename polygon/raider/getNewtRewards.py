@@ -18,7 +18,8 @@ for id in RAIDER_IDS:
             txReceipt = newtClient.getTransactionReceipt(txHash)
             logTx(txReceipt)
             if txReceipt["status"] != 1:
-                logger.error(f"Error getting grimweed rewards for {raiderId}")
+                txLogger.error(
+                    f"Error getting grimweed rewards for {raiderId}")
         else:
             txLogger.info("%s still need %ss to get home!",
                           str(raiderId), str(timeTillHome))

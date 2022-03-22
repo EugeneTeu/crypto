@@ -10,4 +10,4 @@ txLogger.info(txHash)
 txReceipt = aurumStakingClient.getTransactionReceipt(txHash)
 logTx(txReceipt)
 if txReceipt["status"] != 1:
-    logger.error(f"error claiming rewards from LP")
+    txLogger.error(f"error claiming rewards from LP")
