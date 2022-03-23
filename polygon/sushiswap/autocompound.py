@@ -1,6 +1,7 @@
 
 from src.helper.format import convertFromWei, convertFromWeiUSDC
 from src.constants.constants import AURUM_TOKEN_CONTRACT, RAIDER_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT, WMATIC_TOKEN_CONTRACT
+from sushiswap.depositLiquidity import depositToken
 from sushiswap.swapToken import simulateAmount, swapTxn
 from src.clients import aurumStakingClient, sushiswapRouterClient
 from raider.getAurumLpRewards import claimAurumLpRewards
@@ -30,5 +31,21 @@ def getTxn(txn: str) -> None:
 def stakeAndSellRaider() -> None:
     raiderAmt = claimAurumLpRewards()
     txLogger.info(f"Claimed raider amt of {raiderAmt}")
-    swapTxn(raiderAmt, raiderWmaticUsdcPath)
-    txLogger.info(f"Swap raider {convertFromWei(raiderAmt)} to usdc")
+    minAmtOut = swapTxn(raiderAmt, raiderWmaticUsdcPath)
+
+    # TODO: get returned amount swapped from swapTxn
+    txLogger.info(
+        f"Swap raider {convertFromWei(raiderAmt)} to approx {convertFromWeiUSDC(minAmtOut)} usdc")
+
+
+def autoCompound() -> None:
+    raiderAmt = claimAurumLpRewards()
+    txLogger.info(f"Claimed raider amt of {raiderAmt}")
+    splitAmt = raiderAmt / 2
+
+    # swap raider to aurum
+    minAmtA = swapTxn(splitAmt, raiderWmaticAurumPath)
+
+    # swap raider to usdc
+    minAmtB = swapTxn(splitAmt, raiderWmaticUsdcPath)
+    depositToken(AURUM_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT, minAmtA, minAmtB)

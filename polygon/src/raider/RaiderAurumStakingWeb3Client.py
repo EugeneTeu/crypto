@@ -38,3 +38,9 @@ class RaiderAurumStakingWeb3Client(PolygonWeb3Client):
         else:
             txLogger.error("Raider rewards is currently below claim threshold")
             exit(1)
+
+    def depositSLP(self, amt: int) -> HexStr:
+        tx: TxParams = self.buildContractTransaction(
+            self.contract.functions.createStake(amt)
+        )
+        return self.signAndSendTransaction(tx)

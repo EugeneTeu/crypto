@@ -16,7 +16,10 @@ def createPath(addresses: list[str]) -> list[ChecksumAddress]:
     return result
 
 
-def swapTxn(amtIn: int, path: list[str]) -> None:
+def swapTxn(amtIn: int, path: list[str]) -> int:
+    '''
+        returns minimum amount out swapped in wei
+    '''
     # assume amtIn is in wei
     assert(path[0] != USDC_TOKEN_CONTRACT)
     # simulate swap amount
@@ -30,6 +33,7 @@ def swapTxn(amtIn: int, path: list[str]) -> None:
     txLogger.info(txHash)
     txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
     logTx(txReceipt)
+    return amtOutMin
 
 
 def simulateAmount(amtIn: float, path: list[str]) -> int:
