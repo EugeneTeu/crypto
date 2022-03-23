@@ -1,12 +1,12 @@
 from __future__ import annotations
 import json
-from typing import Any, Dict, Optional, Sequence
+from typing import Any, Dict, Optional, Sequence, Tuple
 from eth_account import Account
 from eth_typing import Address, BlockIdentifier, ChecksumAddress
 from web3 import Web3
 from eth_account.datastructures import SignedTransaction
 from web3.contract import Contract, ContractFunction
-from web3.types import BlockData, Nonce, TxParams, TxReceipt, TxData
+from web3.types import BlockData, Nonce, TxParams, TxReceipt, TxData, EventData
 from eth_typing.encoding import HexStr
 from src.base.exceptions import MissingParameter
 
@@ -119,6 +119,8 @@ class Web3Client:
         """
         return self.w3.eth.get_transaction(txHash)
 
+    # def processTransaction(self, txReceipt: TxReceipt) -> Tuple[EventData]:
+    #     return self.contract.events.swapExactTokenForTokens().processReceipt(txReceipt)
     ####################
     # Watch
     ####################

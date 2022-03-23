@@ -6,7 +6,7 @@ import web3
 from web3.types import Wei
 
 
-def convertReadable(amount: int) -> float:
+def convertFromWei(amount: int) -> float:
     '''
       convert amount to type assuming 10^18 decimals
     '''
@@ -23,3 +23,7 @@ def convertToWeiUSDC(amount: float) -> Wei:
 
 def convertFromWeiUSDC(amount: int) -> float:
     return amount / pow(10, 6)
+
+
+def calcualateMin(amt: float) -> int:
+    return int(amt / 100 * 99.5)

@@ -16,29 +16,24 @@ def createPath(addresses: list[str]) -> list[ChecksumAddress]:
     return result
 
 
-def swapTxn(amtIn: float, path: list[str]) -> None:
-    # catch decimal error since usdc has only 6
+def swapTxn(amtIn: int, path: list[str]) -> None:
+    # assume amtIn is in wei
     assert(path[0] != USDC_TOKEN_CONTRACT)
-    # convert from readable to non readable
-    # assume all amt in is 18 decimals
-    amtIn = convertToWei(amtIn)
     # simulate swap amount
     val1 = sushiswapRouterClient.getAmountsOut(amtIn, path)
     amtOut = val1[len(val1) - 1]
     # account for slippage
     amtOutMin = int(amtOut / 100 * 99.5)
-    print(amtOut, amtOutMin)
     # transact
-    # txHash = sushiswapRouterClient.swapExactTokensForTokens(
-    #     amtIn, amtOutMin, path)
-    # txLogger.info(txHash)
-    # txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
-    # logTx(txReceipt)
+    txHash = sushiswapRouterClient.swapExactTokensForTokens(
+        amtIn, amtOutMin, path)
+    txLogger.info(txHash)
+    txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
+    logTx(txReceipt)
 
 
-raiderWmaticAurumPath = [RAIDER_TOKEN_CONTRACT,
-                         WMATIC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT]
-AurumUsdcPath = [AURUM_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT]
-
-
-swapTxn(3300, AurumUsdcPath)
+def simulateAmount(amtIn: float, path: list[str]) -> int:
+    amtIn = convertToWei(amtIn)
+    val1 = sushiswapRouterClient.getAmountsOut(amtIn, path)
+    amtOut = val1[len(val1) - 1]
+    return amtOut

@@ -1,5 +1,5 @@
 import time
-from typing import cast
+from typing import Tuple, cast
 import json
 from eth_typing import Address
 from web3.types import TxParams
@@ -8,7 +8,7 @@ from eth_typing.encoding import HexStr
 import os
 from src.logger.txLogger import logTx, txLogger
 from src.logger.logger import logger
-from src.helper.format import convertReadable
+from src.helper.format import convertFromWei, convertToWei
 from src.helper.types import Raider
 
 from src.constants.constants import AURUM_STAKING_CONTRACT
@@ -23,17 +23,18 @@ class RaiderAurumStakingWeb3Client(PolygonWeb3Client):
     abi = Web3Client.getContractAbiFromFile(
         abiDir + "/aurum_staking_abi.json")
 
-    def _getUserPendingRewards(self) -> Raider:
-        return convertReadable(self.contract.functions.userPendingRewards(self.userAddress).call())
+    def getUserPendingRewards(self) -> Raider:
+        return self.contract.functions.userPendingRewards(self.userAddress).call()
 
-    def getUserRewards(self) -> HexStr:
-        currentRewards = self._getUserPendingRewards()
-        txLogger.info("current Aurum-USDC Rewards: %f RAIDERS", currentRewards)
-        if currentRewards > 3.0:
+    def claimUserRewards(self) -> Tuple[int, HexStr]:
+        currentRewards = self.getUserPendingRewards()
+        txLogger.info("current Aurum-USDC Rewards: %f RAIDERS",
+                      convertFromWei(currentRewards))
+        if currentRewards > convertToWei(3.0):
             # if greater than 3 raider we claim
             tx: TxParams = self.buildContractTransaction(
                 self.contract.functions.getRewards())
-            return self.signAndSendTransaction(tx)
+            return (currentRewards, self.signAndSendTransaction(tx))
         else:
             txLogger.error("Raider rewards is currently below claim threshold")
             exit(1)

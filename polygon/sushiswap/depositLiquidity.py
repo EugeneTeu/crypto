@@ -1,27 +1,36 @@
-
-
-from src.helper.format import convertToWei, convertFromWeiUSDC, convertToWeiUSDC
+from src.helper.format import convertToWei, convertFromWeiUSDC, convertToWeiUSDC, calcualateMin
 from src.constants.constants import AURUM_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT
 from src.clients import sushiswapRouterClient, usdcTokenClient
 from src.logger.logger import logger
+from src.logger.txLogger import txLogger, logTx
 
 
-def depositToken(tokenA: str, tokenB: str, amtA: float, amtB: float) -> None:
+def depositToken(tokenA: str, tokenB: str, amtA: int, amtB: int) -> None:
+    '''
+        pass in wei values
+    '''
+
     # base off all aurum u have
     path = [tokenA, tokenB]
     assert(tokenA != tokenB)
 
-    amtIn = convertToWei(
-        amtA) if tokenA != USDC_TOKEN_CONTRACT else convertToWeiUSDC(amtA)
+    # simulate deposit amount
+    vals = sushiswapRouterClient.getAmountsOut(amtA, path)
+    amtNeeded = vals[len(vals) - 1]
+    if amtNeeded > amtB:
+        logger.error(f"amount needed {amtNeeded} > {amtB}")
+        exit(1)
 
-    # simulate swap amount
-    vals = sushiswapRouterClient.getAmountsOut(amtIn, path)
-    usdcNeeded = vals[len(vals) - 1]
+    # assume wei
+    minAmtA = calcualateMin(amtA)
+    minAmtB = calcualateMin(amtB)
 
-    userUSDCBalance = usdcTokenClient.getBalance()
-    if usdcNeeded > userUSDCBalance:
-        logger.error(
-            f"usdc needed {convertFromWeiUSDC(usdcNeeded)} more than current balance: {convertFromWeiUSDC(userUSDCBalance)}")
-
-    # amtOutMin = int(amtOut / 100 * 99.5)
-    # print(amtOut, amtOutMin)
+    txHash = sushiswapRouterClient.addLiquidity(
+        tokenA, tokenB, amtA, amtB, minAmtA, minAmtB)
+    txLogger.info(txHash)
+    txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
+    if txReceipt["status"] != 1:
+        logs = txReceipt["logs"]
+        txLogger.error(f"transaction failed: {logs}")
+    logTx(txReceipt)
+    return
