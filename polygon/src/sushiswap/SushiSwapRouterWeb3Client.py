@@ -47,8 +47,7 @@ class SushiSwapRouterWeb3Client(PolygonWeb3Client):
         try:
             tx = self.buildContractTransaction(self.contract.functions.addLiquidity(
                 tokenA, tokenB, amountADesired, amountBDesired, amountAMin, amountBMin, self.userAddress, deadline))
-            print(tx)
-            return 1
+            return self.signAndSendTransaction(tx)
             # return self.signAndSendTransaction(tx)
         except ContractLogicError as e:
             print(e)

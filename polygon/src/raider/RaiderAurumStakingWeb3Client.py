@@ -30,7 +30,7 @@ class RaiderAurumStakingWeb3Client(PolygonWeb3Client):
         currentRewards = self.getUserPendingRewards()
         txLogger.info("current Aurum-USDC Rewards: %f RAIDERS",
                       convertFromWei(currentRewards))
-        if currentRewards > convertToWei(3.0):
+        if currentRewards > convertToWei(2.0):
             # if greater than 3 raider we claim
             tx: TxParams = self.buildContractTransaction(
                 self.contract.functions.getRewards())

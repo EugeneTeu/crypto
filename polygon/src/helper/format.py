@@ -18,7 +18,7 @@ def convertToWei(amount: float) -> Wei:
 
 
 def convertToWeiUSDC(amount: float) -> Wei:
-    return Web3.toWei(amount, "micro")
+    return cast(Wei, int(amount * (pow(10, 6))))
 
 
 def convertFromWeiUSDC(amount: int) -> float:

@@ -1,6 +1,7 @@
 from typing import cast, NewType
 from web3 import Web3
 from web3.types import Wei
+from src.helper.format import convertToWei
 from src.logger.logger import logger
 from src.logger.txLogger import logTx, txLogger
 from src.clients import aurumStakingClient
