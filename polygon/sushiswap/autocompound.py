@@ -5,9 +5,9 @@ from src.constants.constants import AURUM_TOKEN_CONTRACT, RAIDER_TOKEN_CONTRACT,
 from sushiswap.depositLiquidity import depositToken
 from sushiswap.swapToken import simulateAmount, swapTxn
 from src.clients import aurumStakingClient, sushiswapRouterClient
-from raider.getAurumLpRewards import claimAurumLpRewards
+from src.getAurumLpRewards import claimAurumLpRewards
 from src.logger.txLogger import logTx, txLogger
-from raider.stakeAurumLp import stakeAurumLp
+from src.stakeAurumLp import stakeAurumLp
 
 raiderWmaticAurumPath = [RAIDER_TOKEN_CONTRACT,
                          WMATIC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT]
@@ -48,5 +48,5 @@ def autoCompound() -> None:
     # swap raider to usdc
     minAmtB = swapTxn(splitAmt, raiderWmaticUsdcPath)
     depositToken(AURUM_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT, minAmtA, minAmtB)
-    # get balance of SLP 
-    # stake SLP 
+    # get balance of SLP
+    # stake SLP
