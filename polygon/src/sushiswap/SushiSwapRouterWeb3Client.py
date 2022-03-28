@@ -3,7 +3,7 @@ from typing import cast
 import json
 from eth_account import Account
 from eth_typing import Address, ChecksumAddress
-from web3.types import TxParams
+from web3.types import TxParams, TxReceipt
 from web3.exceptions import ContractLogicError
 
 from eth_typing.encoding import HexStr

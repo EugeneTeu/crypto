@@ -14,7 +14,7 @@ def convertFromWei(amount: int) -> float:
 
 
 def convertToWei(amount: float) -> Wei:
-    return Web3.toWei(amount, 'ether')
+    return cast(Wei, amount * pow(10, 18))
 
 
 def convertToWeiUSDC(amount: float) -> Wei:

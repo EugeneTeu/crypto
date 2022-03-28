@@ -8,17 +8,6 @@
 
 tested with `python3.9.0` 
 
-## Usage Dark forest
-
-### stake unicorn
-
-`python3 -m unicorn.enterForest`
-
-### unstake unicorn
-
-`python3 -m unicorn.exitForest`
-
-
 ## Usage Raiders
 
 ### End quest 
@@ -40,6 +29,10 @@ tested with `python3.9.0`
 
 `python3 -m raider.startNewtQuest`
 
-### Usage Sushiswap [WIP]
+### Usage Sushiswap
 
 `python3 -m sushiswap.swapToken`
+
+### autocompound
+
+`python3 -m sushiswap.main`

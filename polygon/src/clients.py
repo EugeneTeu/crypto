@@ -14,8 +14,9 @@ from src.raider.RaiderNewtQuestWeb3Client import RaiderNewtQuestWeb3Client
 from src.raider.RaiderGrimweedQuestWeb3Client import RaiderGrimweedQuestWeb3Client
 
 from src.sushiswap.SushiSwapRouterWeb3Client import SushiSwapRouterWeb3Client
-from src.constants.constants import USDC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT
+from src.constants.constants import AURUM_USDC_SLP_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT
 from src.sushiswap.TokenWeb3Client import TokenWeb3Client
+from src.sushiswap.UniswapV2PairWeb3Client import UniswapV2PairWeb3Client
 
 if not os.path.isfile(".env"):
     raise Exception(".env file not found")
@@ -66,3 +67,7 @@ def getTokenClient(address: str) -> TokenWeb3Client:
 
 usdcTokenClient = getTokenClient(USDC_TOKEN_CONTRACT)
 aurumTokenClient = getTokenClient(AURUM_TOKEN_CONTRACT)
+
+
+raiderUsdcSLPTokenClient = cast(
+    UniswapV2PairWeb3Client, UniswapV2PairWeb3Client(AURUM_USDC_SLP_TOKEN_CONTRACT).setNodeUri(nodeUri).setCredentials(key))

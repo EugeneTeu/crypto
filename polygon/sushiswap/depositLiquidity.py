@@ -3,9 +3,10 @@ from src.constants.constants import AURUM_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT
 from src.clients import sushiswapRouterClient, usdcTokenClient
 from src.logger.logger import logger
 from src.logger.txLogger import txLogger, logTx
+from web3.types import TxReceipt
 
 
-def depositToken(tokenA: str, tokenB: str, amtA: int, amtB: int) -> None:
+def depositToken(tokenA: str, tokenB: str, amtA: int, amtB: int) -> TxReceipt:
     '''
         pass in wei values
     '''
@@ -32,5 +33,6 @@ def depositToken(tokenA: str, tokenB: str, amtA: int, amtB: int) -> None:
     if txReceipt["status"] != 1:
         logs = txReceipt["logs"]
         txLogger.error(f"transaction failed: {logs}")
+        exit(1)
     logTx(txReceipt)
-    return
+    return txReceipt
