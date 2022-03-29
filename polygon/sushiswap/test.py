@@ -1,13 +1,12 @@
-from sushiswap.autocompound import getSlpDeposited, getSwapTxnAmountOut
 from src.helper.format import convertFromWei, convertFromWeiUSDC, convertToWei, convertToWeiUSDC
-
+from src.processor import getSwapTxnAmountOut, getSlpAmountOut
 hash = "0xaaed3f544294cac26a855af9def94d25c09137a48321dfb7f8bccb1555ab0c47"
 expected = convertToWei(0.000040280031294405)
-actual = getSlpDeposited(hash)
+actual = getSlpAmountOut(hash)
 
 hash2 = "0xe6cf4eef424e26fc9935216b7a6150eead3f5df56caaa9d05f0a9be350dc8719"
 expected2 = convertToWei(0.000056354036191093)
-actual2 = getSlpDeposited(hash2)
+actual2 = getSlpAmountOut(hash2)
 
 if actual == expected:
     print(f"{hash} passed")

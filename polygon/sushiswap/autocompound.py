@@ -13,23 +13,12 @@ from src.logger.txLogger import logTx, txLogger
 from src.stakeAurumLp import stakeAurumLp
 from web3.types import TxReceipt, LogReceipt
 from src.logger.logger import logger
+from src.processor import getSlpDeposited
 
 raiderWmaticAurumPath = [RAIDER_TOKEN_CONTRACT,
                          WMATIC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT]
 raiderWmaticUsdcPath = [RAIDER_TOKEN_CONTRACT,
                         WMATIC_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT]
-
-
-def getSlpDeposited(txReceipt: TxReceipt) -> int:
-    '''
-        return in wei the amount of SLP received in this txn
-    '''
-    logs = txReceipt["logs"]
-    if len(logs) != 8:
-        raise Exception("wrong number of logs")
-    transferLog = logs[len(logs) - 4]
-    slp = raiderUsdcSLPTokenClient.processTransferEvent(transferLog)
-    return slp
 
 
 def stakeAndSellRaider() -> None:

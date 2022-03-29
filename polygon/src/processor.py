@@ -1,4 +1,4 @@
-from src.clients import sushiswapRouterClient,  getUniswapV2Client
+from src.clients import sushiswapRouterClient,  getUniswapV2Client, raiderUsdcSLPTokenClient
 from web3.types import TxReceipt, LogReceipt
 
 
@@ -24,3 +24,18 @@ def getSwapLogFromSwapEvent(swapLog: LogReceipt) -> int:
     client = getUniswapV2Client(slpAddress)
     amt = client.processSwapEvent(swapLog)
     return amt
+
+
+def getSlpDeposited(txReceipt: TxReceipt) -> int:
+    '''
+        return in wei the amount of SLP received in this txn
+    '''
+    logs = txReceipt["logs"]
+    transferLog = logs[len(logs) - 4]
+    slp = raiderUsdcSLPTokenClient.processTransferEvent(transferLog)
+    return slp
+
+
+def getSlpAmountOut(txHash: str) -> int:
+    txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
+    return getSlpDeposited(txReceipt)
