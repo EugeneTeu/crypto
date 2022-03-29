@@ -7,11 +7,12 @@ from src.helper.format import convertFromWei, convertFromWeiUSDC, convertToWei, 
 from src.constants.constants import AURUM_TOKEN_CONTRACT, RAIDER_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT, WMATIC_TOKEN_CONTRACT, AURUM_USDC_SLP_TOKEN_CONTRACT
 from sushiswap.depositLiquidity import depositToken
 from sushiswap.swapToken import simulateAmount, swapTxn
-from src.clients import aurumStakingClient, sushiswapRouterClient, raiderUsdcSLPTokenClient
+from src.clients import aurumStakingClient, sushiswapRouterClient, raiderUsdcSLPTokenClient, getUniswapV2Client
 from src.getAurumLpRewards import claimAurumLpRewards
 from src.logger.txLogger import logTx, txLogger
 from src.stakeAurumLp import stakeAurumLp
-from web3.types import TxReceipt
+from web3.types import TxReceipt, LogReceipt
+from src.logger.logger import logger
 
 raiderWmaticAurumPath = [RAIDER_TOKEN_CONTRACT,
                          WMATIC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT]
@@ -24,16 +25,11 @@ def getSlpDeposited(txReceipt: TxReceipt) -> int:
         return in wei the amount of SLP received in this txn
     '''
     logs = txReceipt["logs"]
-    for log in logs:
-        if log["address"] == AURUM_USDC_SLP_TOKEN_CONTRACT:
-            for topic in log["topics"]:
-                if topic == HexBytes("0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"):
-                    slp = raiderUsdcSLPTokenClient.processTransferEvent(log)
-                    if slp == -1:
-                        continue
-                    else:
-                        return slp
-    raise Exception("error parsing logs, is it wrong topic?")
+    if len(logs) != 8:
+        raise Exception("wrong number of logs")
+    transferLog = logs[len(logs) - 4]
+    slp = raiderUsdcSLPTokenClient.processTransferEvent(transferLog)
+    return slp
 
 
 def stakeAndSellRaider() -> None:
@@ -47,15 +43,17 @@ def stakeAndSellRaider() -> None:
 
 def autoCompound() -> None:
     raiderAmt = claimAurumLpRewards()
-    txLogger.info(f"Claimed raider amt of {raiderAmt}")
+    logger.info(f"Claimed raider amt of {raiderAmt}")
     splitAmt = int(raiderAmt / 2)
     # swap raider to aurum
-    minAmtA = swapTxn(splitAmt, raiderWmaticAurumPath)
+    amtA = swapTxn(splitAmt, raiderWmaticAurumPath)
     # swap raider to usdc
-    minAmtB = swapTxn(splitAmt, raiderWmaticUsdcPath)
+    amtB = swapTxn(splitAmt, raiderWmaticUsdcPath)
+    logger.info(f"swapped for {amtA} aurum and {amtB} USDC")
     txReceipt = depositToken(AURUM_TOKEN_CONTRACT,
-                             USDC_TOKEN_CONTRACT, minAmtA, minAmtB)
+                             USDC_TOKEN_CONTRACT, amtA, amtB)
     # get balance of SLP
     slpDeposited = getSlpDeposited(txReceipt)
+    logger.info(f"SLP received: {slpDeposited}")
     # stake SLP
     stakeAurumLp(slpDeposited)

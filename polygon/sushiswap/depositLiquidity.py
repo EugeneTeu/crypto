@@ -13,16 +13,28 @@ def depositToken(tokenA: str, tokenB: str, amtA: int, amtB: int) -> TxReceipt:
 
     # base off all aurum u have
     path = [tokenA, tokenB]
+    path2 = [tokenB, tokenA]
     assert(tokenA != tokenB)
 
     # simulate deposit amount
     vals = sushiswapRouterClient.getAmountsOut(amtA, path)
+    vals2 = sushiswapRouterClient.getAmountsOut(amtB, path2)
     amtNeeded = vals[len(vals) - 1]
+    amtNeeded2 = vals2[len(vals) - 1]
     if amtNeeded > amtB:
-        logger.error(f"amount needed {amtNeeded} > {amtB}")
-        exit(1)
+        # i have more aurum
+        logger.error(f"amount needed for tokenA {amtNeeded} > {amtB}")
+        # reduce the usdc needed
+        amtB = amtNeeded
+        # then we continue
+    if amtNeeded2 > amtA:
+        # i have more of amtB
+        logger.error(f"amount needed for tokenB {amtNeeded} > {amtA}")
+        # reduce the usdc needed
+        amtA = amtNeeded2
+        # then we continue
 
-    # assume wei
+        # assume wei
     minAmtA = calcualateMin(amtA)
     minAmtB = calcualateMin(amtB)
 

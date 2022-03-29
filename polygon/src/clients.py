@@ -71,3 +71,7 @@ aurumTokenClient = getTokenClient(AURUM_TOKEN_CONTRACT)
 
 raiderUsdcSLPTokenClient = cast(
     UniswapV2PairWeb3Client, UniswapV2PairWeb3Client(AURUM_USDC_SLP_TOKEN_CONTRACT).setNodeUri(nodeUri).setCredentials(key))
+
+
+def getUniswapV2Client(address: str) -> UniswapV2PairWeb3Client:
+    return cast(UniswapV2PairWeb3Client, UniswapV2PairWeb3Client(address).setNodeUri(nodeUri).setCredentials(key))

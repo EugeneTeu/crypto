@@ -6,6 +6,7 @@ from src.helper.format import convertToWei
 from src.constants.constants import AURUM_TOKEN_CONTRACT, RAIDER_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT, WMATIC_TOKEN_CONTRACT
 from src.clients import sushiswapRouterClient
 from src.logger.txLogger import logTx, txLogger
+from src.processor import processSwapTxnLog
 
 
 def createPath(addresses: list[str]) -> list[ChecksumAddress]:
@@ -33,7 +34,9 @@ def swapTxn(amtIn: int, path: list[str]) -> int:
     txLogger.info(txHash)
     txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
     logTx(txReceipt)
-    return amtOutMin
+ 
+    amountOut = processSwapTxnLog(txReceipt)
+    return amountOut
 
 
 def simulateAmount(amtIn: float, path: list[str]) -> int:

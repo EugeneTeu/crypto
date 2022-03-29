@@ -19,8 +19,9 @@ class UniswapV2PairWeb3Client(PolygonWeb3Client):
 
     def processTransferEvent(self, txReceipt: LogReceipt) -> int:
         logs = self.contract.events.Transfer().processLog(txReceipt)
-        if logs["args"]["to"] == self.userAddress:
-            valueOfTransfer = logs["args"]["value"]
-            return valueOfTransfer
-        else:
-            return -1
+        valueOfTransfer = logs["args"]["value"]
+        return valueOfTransfer
+
+    def processSwapEvent(self, logReceipt: LogReceipt) -> int:
+        logs = self.contract.events.Swap().processLog(logReceipt)
+        return logs["args"]["amount1Out"]

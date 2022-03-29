@@ -29,3 +29,10 @@ SUSHISWAP_ROUTER_CONTRACT = "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
 USDC_TOKEN_CONTRACT = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
 
 AURUM_USDC_SLP_TOKEN_CONTRACT = "0xaBEE7668a96C49D27886D1a8914a54a5F9805041"
+
+
+# ==============================================================================
+# SLP swap event topic address
+# ==============================================================================
+
+SLP_SWAP_EVENT_TOPIC = "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822"
