@@ -46,3 +46,4 @@ def autoCompound() -> None:
     logger.info(f"SLP received: {slpDeposited}")
     # stake SLP
     stakeAurumLp(slpDeposited)
+    logger.info(f"Auto compounding complete!")
