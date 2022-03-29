@@ -47,3 +47,19 @@ def autoCompound() -> None:
     # stake SLP
     stakeAurumLp(slpDeposited)
     logger.info(f"Auto compounding complete!")
+
+
+def test() -> None:
+    '''
+        test with your amount of aurum + usdc
+    '''
+    aurum = 67961064017857483453
+    usdc = 2187200
+    txReceipt = depositToken(AURUM_TOKEN_CONTRACT,
+                             USDC_TOKEN_CONTRACT, aurum, usdc)
+    # get balance of SLP
+    slpDeposited = getSlpDeposited(txReceipt)
+    logger.info(f"SLP received: {slpDeposited}")
+    # stake SLP
+    stakeAurumLp(slpDeposited)
+    logger.info(f"Auto compounding complete!")

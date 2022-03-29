@@ -23,18 +23,18 @@ def depositToken(tokenA: str, tokenB: str, amtA: int, amtB: int) -> TxReceipt:
     amtNeeded2 = vals2[len(vals) - 1]
     if amtNeeded > amtB:
         # i have more aurum
-        logger.error(f"amount needed for tokenA {amtNeeded} > {amtB}")
+        logger.info(f"amount needed for tokenA {amtNeeded} > {amtB}")
         # reduce the usdc needed
         amtB = amtNeeded
         # then we continue
     if amtNeeded2 > amtA:
         # i have more of amtB
-        logger.error(f"amount needed for tokenB {amtNeeded} > {amtA}")
+        logger.info(f"amount needed for tokenB {amtNeeded2} > {amtA}")
         # reduce the usdc needed
         amtA = amtNeeded2
         # then we continue
 
-        # assume wei
+    # assume wei
     minAmtA = calcualateMin(amtA)
     minAmtB = calcualateMin(amtB)
 
