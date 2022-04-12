@@ -1,6 +1,6 @@
 
 from enum import auto
-import json
+import time
 
 from hexbytes import HexBytes
 from src.helper.format import convertFromWei, convertFromWeiUSDC, convertToWei, convertToWeiUSDC
@@ -34,15 +34,20 @@ def autoCompound() -> None:
     raiderAmt = claimAurumLpRewards()
     logger.info(f"Claimed raider amt of {raiderAmt}")
     splitAmt = int(raiderAmt / 2)
+    time.sleep(5)
     # swap raider to aurum
     amtA = swapTxn(splitAmt, raiderWmaticAurumPath)
+    time.sleep(5)
     # swap raider to usdc
     amtB = swapTxn(splitAmt, raiderWmaticUsdcPath)
+    time.sleep(5)
     logger.info(f"swapped for {amtA} aurum and {amtB} USDC")
     txReceipt = depositToken(AURUM_TOKEN_CONTRACT,
                              USDC_TOKEN_CONTRACT, amtA, amtB)
+    time.sleep(5)
     # get balance of SLP
     slpDeposited = getSlpDeposited(txReceipt)
+    time.sleep(5)
     logger.info(f"SLP received: {slpDeposited}")
     # stake SLP
     stakeAurumLp(slpDeposited)

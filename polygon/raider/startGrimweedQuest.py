@@ -7,7 +7,7 @@ usage: python3 -m raider.startGrimweedQuest
 from src.logger.txLogger import logTx, txLogger
 from src.constants.constants import RAIDER_IDS
 from src.clients import grimweedClient, newtClient
-
+import time
 for id in RAIDER_IDS:
     raiderId = int(id)
     status1 = grimweedClient.getRaiderStatus(raiderId)
@@ -17,3 +17,4 @@ for id in RAIDER_IDS:
         txLogger.info(txHash)
         txReceipt = grimweedClient.getTransactionReceipt(txHash)
         logTx(txReceipt)
+    time.sleep(2)
