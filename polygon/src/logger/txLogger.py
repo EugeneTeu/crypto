@@ -14,7 +14,7 @@ from src.logger.logger import f_handler, c_handler
 
 # Create a custom logger
 txLogger = logging.getLogger(__name__)
-txLogger.setLevel("DEBUG")
+txLogger.setLevel("INFO")
 
 # Create handlers
 tx_handler = logging.handlers.TimedRotatingFileHandler(
@@ -43,4 +43,4 @@ def logTx(txReceipt: TxReceipt) -> None:
     ethSpent = Web3.fromWei(
         txReceipt["effectiveGasPrice"] * txReceipt["gasUsed"], "ether"
     )
-    txLogger.debug("Spent " + str(ethSpent) + " matic")
+    txLogger.info("Spent " + str(ethSpent) + " matic")

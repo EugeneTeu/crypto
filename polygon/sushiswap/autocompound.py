@@ -30,6 +30,11 @@ def stakeAndSellRaider() -> None:
         f"Swap raider {convertFromWei(raiderAmt)} to approx {convertFromWeiUSDC(minAmtOut)} usdc")
 
 
+def getRaiderReward() -> None:
+    raiderAmt = claimAurumLpRewards()
+    logger.info(f"Claimed raider amt of {raiderAmt}")
+
+
 def autoCompound() -> None:
     raiderAmt = claimAurumLpRewards()
     logger.info(f"Claimed raider amt of {raiderAmt}")
