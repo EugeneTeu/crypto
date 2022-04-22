@@ -8,7 +8,7 @@ from eth_account.datastructures import SignedTransaction
 from web3.contract import Contract, ContractFunction
 from web3.types import BlockData, Nonce, TxParams, TxReceipt, TxData, EventData
 from eth_typing.encoding import HexStr
-from src.base.exceptions import MissingParameter
+from src.base.exceptions import MissingParameter, TransactionTooExpensive
 
 
 class Web3Client:
@@ -50,11 +50,15 @@ class Web3Client:
         Gas is estimated according to the formula
         maxMaxFeePerGas = 2 * baseFee + maxPriorityFeePerGas.
         """
+        # Estimate the maximum price per unit of gas
+        (maxFeePerGasInGwei, baseFeeInGwei) = self.estimateMaxFeePerGasInGwei(
+            self.maxPriorityFeePerGasInGwei
+        )
         tx: TxParams = {
             "type": 0x2,
             "chainId": self.chainId,
             "gas": self.gasLimit,  # type: ignore
-            "maxFeePerGas": Web3.toWei(self.estimateMaxFeePerGasInGwei(), "gwei"),
+            "maxFeePerGas": Web3.toWei(maxFeePerGasInGwei, "gwei"),
             "maxPriorityFeePerGas": Web3.toWei(self.maxPriorityFeePerGasInGwei, "gwei"),
             "nonce": self.getNonce(),
         }
@@ -149,17 +153,25 @@ class Web3Client:
             address = self.userAddress
         return self.w3.eth.get_transaction_count(address)
 
-    def estimateMaxFeePerGasInGwei(self) -> int:
+    def estimateMaxFeePerGasInGwei(
+        self, maxPriorityFeePerGasInGwei: float
+    ) -> Tuple[float, float]:
         """
-        Gets the base fee from the latest block and returns a maxFeePerGas
-        estimate as 2 * baseFee + maxPriorityFeePerGas, as done in the
-        web3 gas_price_strategy middleware (and also here >
-        https://ethereum.stackexchange.com/a/113373/89782)
+        Estimate the maxFeePerGas parameter using the formula
+        2 * baseFee + maxPriorityFeePerGas.
+
+        This is the same formula used by web3 and here
+        https://ethereum.stackexchange.com/a/113373/89782
+
+        The baseFee is fetched on chain from the latest block.
+
+        Returns both the estimate (in gwei) and the baseFee
+        (also in gwei).
         """
         latest_block = self.w3.eth.get_block("latest")
-        baseFeeInWei = latest_block["baseFeePerGas"]  # in wei
-        baseFeeInGwei = int(Web3.fromWei(baseFeeInWei, "gwei"))
-        return 2 * baseFeeInGwei + self.maxPriorityFeePerGasInGwei
+        baseFeeInWei = latest_block["baseFeePerGas"]
+        baseFeeInGwei = float(Web3.fromWei(baseFeeInWei, "gwei"))
+        return (2 * baseFeeInGwei + maxPriorityFeePerGasInGwei, baseFeeInGwei)
 
     def getLatestBlock(self) -> BlockData:
         """

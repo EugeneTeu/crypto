@@ -22,38 +22,25 @@ if not os.path.isfile(".env"):
     raise Exception(".env file not found")
 dotenv.load_dotenv()
 
-# RPC
-nodeUri = getenv("WEB3_NODE_URI")
-key = getenv("PRIVATE_KEY")
 
 # ==============================================================================
 # RAIDER CLIENTS
 # ==============================================================================
-grimweedClient = cast(RaiderGrimweedQuestWeb3Client, (RaiderGrimweedQuestWeb3Client().setNodeUri(
-    nodeUri).setCredentials(key)))
+grimweedClient = cast(RaiderGrimweedQuestWeb3Client,
+                      (RaiderGrimweedQuestWeb3Client()))
 
-newtClient = cast(RaiderNewtQuestWeb3Client, (RaiderNewtQuestWeb3Client().setNodeUri(
-    nodeUri).setCredentials(key)))
+newtClient = cast(RaiderNewtQuestWeb3Client, (RaiderNewtQuestWeb3Client()))
 
 aurumStakingClient = cast(RaiderAurumStakingWeb3Client, RaiderAurumStakingWeb3Client(
-).setNodeUri(nodeUri).setCredentials(key))
+))
 
-# ==============================================================================
-# UNICORN CLIENTS
-# ==============================================================================
-
-darkForestClient = cast(DarkForestWeb3Client, DarkForestWeb3Client(
-).setNodeUri(nodeUri).setCredentials(key))
-
-unicornNFTClient = cast(UnicornNFTWeb3Client, UnicornNFTWeb3Client(
-).setNodeUri(nodeUri).setCredentials(key))
 
 # ==============================================================================
 # Sushiswap client
 # ==============================================================================
 
 sushiswapRouterClient = cast(SushiSwapRouterWeb3Client, SushiSwapRouterWeb3Client(
-).setNodeUri(nodeUri).setCredentials(key))
+))
 
 
 # ==============================================================================
@@ -62,7 +49,7 @@ sushiswapRouterClient = cast(SushiSwapRouterWeb3Client, SushiSwapRouterWeb3Clien
 
 def getTokenClient(address: str) -> TokenWeb3Client:
     return cast(TokenWeb3Client, TokenWeb3Client(address
-                                                 ).setNodeUri(nodeUri).setCredentials(key))
+                                                 ))
 
 
 usdcTokenClient = getTokenClient(USDC_TOKEN_CONTRACT)
@@ -70,8 +57,8 @@ aurumTokenClient = getTokenClient(AURUM_TOKEN_CONTRACT)
 
 
 raiderUsdcSLPTokenClient = cast(
-    UniswapV2PairWeb3Client, UniswapV2PairWeb3Client(AURUM_USDC_SLP_TOKEN_CONTRACT).setNodeUri(nodeUri).setCredentials(key))
+    UniswapV2PairWeb3Client, UniswapV2PairWeb3Client(AURUM_USDC_SLP_TOKEN_CONTRACT))
 
 
 def getUniswapV2Client(address: str) -> UniswapV2PairWeb3Client:
-    return cast(UniswapV2PairWeb3Client, UniswapV2PairWeb3Client(address).setNodeUri(nodeUri).setCredentials(key))
+    return cast(UniswapV2PairWeb3Client, UniswapV2PairWeb3Client(address))
