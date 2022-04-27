@@ -3,6 +3,7 @@ from enum import auto
 import time
 
 from hexbytes import HexBytes
+from web3 import Web3
 from src.helper.format import convertFromWei, convertFromWeiUSDC, convertToWei, convertToWeiUSDC
 from src.constants.constants import AURUM_TOKEN_CONTRACT, RAIDER_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT, WMATIC_TOKEN_CONTRACT, AURUM_USDC_SLP_TOKEN_CONTRACT
 from sushiswap.depositLiquidity import depositToken
@@ -15,10 +16,10 @@ from web3.types import TxReceipt, LogReceipt
 from src.logger.logger import logger
 from src.processor import getSlpDeposited
 
-raiderWmaticAurumPath = [RAIDER_TOKEN_CONTRACT,
-                         WMATIC_TOKEN_CONTRACT, AURUM_TOKEN_CONTRACT]
-raiderWmaticUsdcPath = [RAIDER_TOKEN_CONTRACT,
-                        WMATIC_TOKEN_CONTRACT, USDC_TOKEN_CONTRACT]
+raiderWmaticAurumPath = [Web3.toChecksumAddress(RAIDER_TOKEN_CONTRACT),
+                         Web3.toChecksumAddress(WMATIC_TOKEN_CONTRACT), Web3.toChecksumAddress(AURUM_TOKEN_CONTRACT)]
+raiderWmaticUsdcPath = [Web3.toChecksumAddress(RAIDER_TOKEN_CONTRACT),
+                        Web3.toChecksumAddress(WMATIC_TOKEN_CONTRACT), Web3.toChecksumAddress(USDC_TOKEN_CONTRACT)]
 
 
 def stakeAndSellRaider() -> None:

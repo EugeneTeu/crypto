@@ -17,26 +17,51 @@ def createPath(addresses: list[str]) -> list[ChecksumAddress]:
     return result
 
 
-def swapTxn(amtIn: int, path: list[str]) -> int:
+def swapTxn(amtIn: int, path: list[ChecksumAddress]) -> int:
     '''
         returns minimum amount out swapped in wei
     '''
-    # assume amtIn is in wei
-    assert(path[0] != USDC_TOKEN_CONTRACT)
     # simulate swap amount
     val1 = sushiswapRouterClient.getAmountsOut(amtIn, path)
+
     amtOut = val1[len(val1) - 1]
     # account for slippage
     amtOutMin = int(amtOut / 100 * 99.5)
     # transact
-    txHash = sushiswapRouterClient.swapExactTokensForTokens(
-        amtIn, amtOutMin, path)
-    txLogger.info(txHash)
-    txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
-    logTx(txReceipt)
- 
-    amountOut = processSwapTxnLog(txReceipt)
-    return amountOut
+    try:
+        txHash = sushiswapRouterClient.swapExactTokensForTokens(
+            amtIn, amtOutMin, path)
+        txLogger.info(txHash)
+        txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
+        logTx(txReceipt)
+        amountOut = processSwapTxnLog(txReceipt)
+        # amountOut = 0
+        return amountOut
+    except Exception as e:
+        txLogger.error(f"failed swap - {e}")
+        exit(1)
+
+
+def swapTxnV2(amtIn: int, path: list[ChecksumAddress]) -> None:
+    '''
+        returns minimum amount out swapped in wei
+    '''
+    # simulate swap amount
+    val1 = sushiswapRouterClient.getAmountsOut(amtIn, path)
+
+    amtOut = val1[len(val1) - 1]
+    # account for slippage
+    amtOutMin = int(amtOut / 100 * 99.5)
+    # transact
+    try:
+        txHash = sushiswapRouterClient.swapExactTokensForTokens(
+            amtIn, amtOutMin, path)
+        txLogger.info(txHash)
+        txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
+        logTx(txReceipt)
+    except Exception as e:
+        txLogger.error(f"failed swap - {e}")
+        exit(1)
 
 
 def simulateAmount(amtIn: float, path: list[str]) -> int:

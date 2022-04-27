@@ -21,10 +21,10 @@ class SushiSwapRouterWeb3Client(PolygonWeb3Client):
     abiDir = os.path.dirname(os.path.realpath(__file__)) + "/abi"
     abi = Web3Client.getContractAbiFromFile(abiDir + "/router_abi.json")
 
-    def getAmountsOut(self, amtIn: int,  path: list[str]) -> list[int]:
+    def getAmountsOut(self, amtIn: int,  path: list[ChecksumAddress]) -> list[int]:
         return self.contract.functions.getAmountsOut(amtIn, path).call()
 
-    def swapExactTokensForTokens(self, amtIn: int, amtOutMin: int, path: list[str]) -> int:
+    def swapExactTokensForTokens(self, amtIn: int, amtOutMin: int, path: list[ChecksumAddress]) -> int:
         '''
             https://docs.uniswap.org/protocol/V2/reference/smart-contracts/router-02#swapexacttokensfortokens
         '''

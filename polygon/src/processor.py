@@ -9,6 +9,8 @@ def getSwapTxnAmountOut(txHash: str) -> int:
     txReceipt = sushiswapRouterClient.getTransactionReceipt(txHash)
     return processSwapTxnLog(txReceipt)
 
+# TODO: this depends on number of paths. here is only a single addr to addr swap
+
 
 def processSwapTxnLog(txReceipt: TxReceipt) -> int:
     logs = txReceipt["logs"]
