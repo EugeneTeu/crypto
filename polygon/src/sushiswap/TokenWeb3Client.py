@@ -16,6 +16,7 @@ class TokenWeb3Client(PolygonWeb3Client):
 
     def __init__(self, tokenAddress: str):
         self.contractAddress = cast(Address, tokenAddress)
+        super().__init__()
 
     def getTokenInfo(self) -> dict[str, str]:
         symbol = self.contract.functions.symbol().call()

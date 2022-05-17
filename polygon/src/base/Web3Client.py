@@ -223,7 +223,8 @@ class Web3Client:
         # Set the contract if possible, e.g. if the subclass defines address & ABI.
         try:
             self.setContract(address=self.contractAddress, abi=self.abi)
-        except:
+        except Exception as e:
+            print(e)
             pass
         return self
 
