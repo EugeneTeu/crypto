@@ -10,6 +10,8 @@ import dotenv
 from src.raider.RaiderAurumStakingWeb3Client import RaiderAurumStakingWeb3Client
 from src.unicorn.UnicornNFTWeb3Client import UnicornNFTWeb3Client
 from src.unicorn.DarkForestWeb3Client import DarkForestWeb3Client
+from src.unicorn.StakedRbwWeb3Client import StakedRbwWeb3Client
+
 from src.raider.RaiderNewtQuestWeb3Client import RaiderNewtQuestWeb3Client
 from src.raider.RaiderGrimweedQuestWeb3Client import RaiderGrimweedQuestWeb3Client
 
@@ -22,6 +24,11 @@ if not os.path.isfile(".env"):
     raise Exception(".env file not found")
 dotenv.load_dotenv()
 
+
+# ==============================================================================
+# Unicorn clients
+# ==============================================================================
+stakedRbwClient = cast(StakedRbwWeb3Client, (StakedRbwWeb3Client()))
 
 # ==============================================================================
 # RAIDER CLIENTS
