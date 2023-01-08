@@ -1,3 +1,7 @@
 {
-    "ETH-USDT": "1262.87"
+    "bestAsk": 1263.22,
+    "bestBid": 1263.21,
+    "price": 1263.22,
+    "ticker_name": "ETH-USDT",
+    "time": 1673184180518
 }

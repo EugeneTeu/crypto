@@ -5,7 +5,7 @@ import pprint
 import time
 from dotenv import load_dotenv
 import signal
-from PriceLogic import PriceLogic
+from UtilLogic import UtilLogic
 
 from TickerInfo import TickerInfo
 load_dotenv()
@@ -28,30 +28,32 @@ client = Market(url=BASE_URL)
 
 server_time = client.get_server_timestamp()
 
-current_price = PriceLogic.getPriceFromFile(TICKER) #TODO: read from redis?
+class Runner(object):
+    def __init__(self, tickerName: str, info: TickerInfo):
+        self.tickerName = tickerName
+        self.currentTickerInfo = info
+        signal.signal(signal.SIGINT, self.handler)
 
-
-def handler(signum, frame):
-    res = input("Ctrl-c was pressed. Do you really want to exit? y/n ")
-    if res == 'y':
-        data = { TICKER : f'{current_price}'}
-        json_data = json.dumps(data, indent=4)
-        with open(f"{TICKER}.json", "w") as outfile:
-            outfile.write(json_data)
+    
+    def handler(self, signum, frame):
+        res = input("Ctrl-c was pressed. Do you really want to exit? y/n ")
+        if res == 'y':
+            UtilLogic.saveToFile(TICKER, self.currentTickerInfo)
             exit(1)
- 
-signal.signal(signal.SIGINT, handler)
- 
-print(f'Starting price is {current_price}')
-while True:
-    ticker_info = TickerInfo(client.get_ticker(TICKER))
-    price = ticker_info.getPrice()
-    if current_price == 0:
-        current_price = price
-    else:
-       current_price = PriceLogic.measure(current_price, price)
-    print(f'Current price is {current_price}')
-    time.sleep(30); 
+
+    def updateTickerInfo(self, tickerInfo: TickerInfo):
+        UtilLogic.measure(self.currentTickerInfo.getPrice(), tickerInfo.getPrice())
+        self.currentTickerInfo = tickerInfo
+        print(self.currentTickerInfo.price)
+    
+
+if __name__ == '__main__':  
+    fileInfo = UtilLogic.getInfoFromFile(TICKER)
+    information = Runner(TICKER, fileInfo)
+    while True:
+        ticker_info = TickerInfo(TICKER, client.get_ticker(TICKER))
+        information.updateTickerInfo(tickerInfo=ticker_info)
+        time.sleep(10); 
 
 
 
