@@ -2,7 +2,7 @@ import asyncio
 import json
 import pprint
 import os
-
+from typing import List, Tuple
 from kucoin.client import WsToken, Market
 from kucoin.ws_client import KucoinWsClient
 from MarketDataLevel2Type import Level2MarketDataMsg, Changes, Data
@@ -72,6 +72,21 @@ async def main():
             updateAsksAndBids(parsed_msg)
             # UtilLogic.streamToFile(ETH_MARKET_DATA_FILE_NAME, msg)
 
+    # asks: List[str]  # price, size , sequence
+    def processAskAndBids(
+        current_seq: float, asks: List[str]
+    ) -> list[Tuple[float, float, float]]:
+        remaining = []
+        for ask in asks:
+            ask_seq = ask[2]
+            if ask_seq > current_seq:
+                price = float(ask[0])
+                size = float(ask[1])
+                seq = float(ask[2])
+                val = [price, size, seq]
+                remaining.append(val)
+        return remaining
+
     # MAIN DRIVER
     # is public
     client = WsToken()
@@ -83,19 +98,63 @@ async def main():
     # await ws_client.subscribe('/market/ticker:BTC-USDT,ETH-USDT')
     # await ws_client.subscribe('/spotMarket/level2Depth5:ETH-USDT,MATIC-USDT')
     # await ws_client.subscribe(ETH_MARKET_DATA)
+
+    # price to sizes
+    asks = {}
+    # price to seq
+    asks_seq = {}
+
     while True:
         # step 1
         # local snapshot
-        orderBookData = REST_CLIENT.get_aggregated_orderv3(ETH_USDT_SYMBOL)
+        # orderBookData = REST_CLIENT.get_aggregated_orderv3(ETH_USDT_SYMBOL)
+        orderBookData = REST_CLIENT.get_part_order(20, ETH_USDT_SYMBOL)
         current_seq_num = float(orderBookData["sequence"])
         order_book_asks = orderBookData["asks"]
         order_book_bids = orderBookData["bids"]
+        seq = float(orderBookData["sequence"])
+
+        # print(current_seq_num)
+        # printData(order_book_asks, order_book_bids)
+
+        for ask in order_book_asks:
+            price = float(ask[0])
+            size = float(ask[1])
+            asks[price] = size
+            asks_seq[price] = seq
 
         # step 2
         # update order book
 
-        # step 3 working order book
+        bids = {}
+        for data in current_data:
+            seq_start = data.sequenceStart
+            seq_end = data.sequenceEnd
+            if seq_end <= seq:
+                data_asks = data.changes.asks
+                data_bids = data.changes.bids
+                # list of price to size
+                process_asks = processAskAndBids(seq, data_asks)
 
+                for ask in process_asks:
+                    curr_price = ask[0]
+                    curr_size = ask[1]
+                    curr_seq = ask[2]
+                    if curr_price not in asks:
+                        asks[curr_price] = curr_size
+                        asks_seq[curr_price] = curr_seq
+                    elif curr_price in asks:
+                        if asks_seq[curr_price] <= curr_seq:
+                            if curr_size == 0:
+                                # delete
+                                asks.pop(curr_price)
+                                asks_seq.pop(curr_price)
+                            else:
+                                asks[curr_price] = curr_size
+                                asks_seq[curr_price] = curr_seq
+
+        # step 3 working order book
+        print(asks, asks_seq)
         # print(current_seq_num)
         await asyncio.sleep(60)
 
